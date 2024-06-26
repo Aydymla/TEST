@@ -8,6 +8,7 @@
   <style>
     body {
       background-color: #f0f0f0;
+      color: #333; /* Цвет текста */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -17,9 +18,16 @@
       font-family: Arial, sans-serif;
     }
     form {
+      background-color: #fff; /* Белый фон формы */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Тень для формы */
       display: flex;
-      flex-direction: column;
-      margin-top: 20px; /* Отступ сверху формы */
+      flex-direction: column; 
+/*       margin-top: 20px; /* Отступ сверху формы */ */
+      align-items: center;
+      width: 80%;
+      max-width: 600px; /* Максимальная ширина формы */  
     }
     label, select, input, textarea {
       margin: 5px;
