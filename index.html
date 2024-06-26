@@ -87,7 +87,7 @@
           const data = await response.json();
           if (data.result === 'success') {
             alert('Данные успешно отправлены!');
-            Telegram.WebApp.sendData(data)
+            Telegram.WebApp.sendData(data);
             Telegram.WebApp.close(); // Скрыть клавиатуру и закрыть WebApp
           } else {
             alert('При отправке данных произошла ошибка: ' + data.message);
@@ -97,15 +97,13 @@
         }
       });
 
-      if (Telegram.WebApp.initData && Telegram.WebApp.initData.user) {
-        document.getElementById('userId').value = Telegram.WebApp.initData.user.id || '';
-        document.getElementById('userUsername').value = Telegram.WebApp.initData.user.username || '';
+      // Заполнение полей информацией о пользователе
+      const initData = Telegram.WebApp.initDataUnsafe;
+      if (initData && initData.user) {
+        document.getElementById('userId').value = initData.user.id || '';
+        document.getElementById('userUsername').value = initData.user.username || '';
       }
-      if (Telegram.WebApp.Data && Telegram.WebApp.Data.user) {
-        document.getElementById('userId').value = Telegram.WebApp.Data.user.id || '';
-        document.getElementById('userUsername').value = Telegram.WebApp.Data.user.username || '';
-      }
-      
+
       // Скрытие клавиатуры при фокусе на невводимых полях (select и file input)
       const nonTextInputFields = form.querySelectorAll('select, input[type="file"]');
       nonTextInputFields.forEach(field => {
@@ -176,10 +174,11 @@
 
     <label>Тип топлива:</label>
     <div class="fuel-type-buttons">
-      <button type="button" id="benzine" name="fuelType" value="Бензин" onclick="selectFuelType(this.value)" required>Бензин</button>
-      <button type="button" id="diesel" name="fuelType" value="Дизель" onclick="selectFuelType(this.value)" required>Дизель</button>
-      <button type="button" id="gas" name="fuelType" value="Газ" onclick="selectFuelType(this.value)" required>Газ</button>
+      <button type="button" id="benzine" value="Бензин" onclick="selectFuelType(this.value)">Бензин</button>
+      <button type="button" id="diesel" value="Дизель" onclick="selectFuelType(this.value)">Дизель</button>
+      <button type="button" id="gas" value="Газ" onclick="selectFuelType(this.value)">Газ</button>
     </div>
+    <input type="hidden" name="fuelType" required>
 
     <label for="mileage">Пробег авто:</label>
     <input type="number" id="mileage" name="mileage" required>
@@ -189,6 +188,9 @@
 
     <label for="photo">Загрузить фотографию:</label>
     <input type="file" id="photo" name="photo" accept="image/*">
+
+    <input type="hidden" id="userId" name="userId">
+    <input type="hidden" id="userUsername" name="userUsername">
 
     <input class="submit-btn" type="submit" value="Отправить">
   </form>
