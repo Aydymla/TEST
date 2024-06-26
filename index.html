@@ -155,6 +155,15 @@
     <label for="cashier">Инкассатор:</label>
     <select id="cashier" name="cashier" required></select>
 
+    <label for="carNumber">Гос.номер:</label>
+    <select id="carNumber" name="carNumber" required></select>
+
+    <label for="coupons">Талоны:</label>
+    <select id="coupons" name="coupons" required>
+      <option value="ДА">ДА</option>
+      <option value="НЕТ">НЕТ</option>
+    </select>
+
     <label for="amountSpent">Потрачено (сумма):</label>
     <input type="number" id="amountSpent" name="amountSpent" required>
 
@@ -177,15 +186,9 @@
     <label for="photo">Загрузить фотографию:</label>
     <input type="file" id="photo" name="photo" accept="image/*">
 
-    <label for="carNumber">Гос.номер:</label>
-    <select id="carNumber" name="carNumber" required></select>
+    <input type="hidden" id="userId" name="userId"> <!-- Поле для user.id -->
+    <input type="hidden" id="userUsername" name="userUsername"> <!-- Поле для user.username -->
 
-    <label for="coupons">Талоны:</label>
-    <select id="coupons" name="coupons" required>
-      <option value="ДА">ДА</option>
-      <option value="НЕТ">НЕТ</option>
-    </select>
-    
     <input class="submit-btn" type="submit" value="Отправить">
   </form>
 </body>
