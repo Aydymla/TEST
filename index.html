@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Инкассаторы</title>
+  <title>Отчеты инкассаторов</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
@@ -32,7 +32,10 @@
     .fuel-type-buttons {
       display: flex;
       gap: 10px;
-      width: 200%; /* Увеличим размер кнопки Выбрать файл */
+    }
+    .fuel-type-buttons button {
+      padding: 10px 20px; /* Увеличим отступы внутри кнопок для улучшения визуального восприятия */
+      font-size: 16px; /* Увеличим размер текста в кнопках */
     }
     #photo {
       width: 200%; /* Увеличим размер кнопки Выбрать файл */
@@ -40,11 +43,12 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', async function() {
-      if (Telegram.WebApp) {
+      if (!Telegram.WebApp) {
+        console.error('Telegram.WebApp не найдено. Пожалуйста, запустите эту страницу в приложении Telegram.');
+        // Дополнительные действия, если приложение не запущено в Telegram
+      } else {
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
-      } else {
-        console.error('Telegram.WebApp не найдено');
       }
       
       const form = document.getElementById('dataForm');
@@ -68,6 +72,14 @@
         } catch (error) {
           console.error('Ошибка!', error.message);
         }
+      });
+
+      // Скрытие клавиатуры при написании сообщения
+      const inputFields = form.querySelectorAll('input, select, textarea');
+      inputFields.forEach(field => {
+        field.addEventListener('keyup', () => {
+          Telegram.WebApp.close(); // Скрыть клавиатуру Telegram
+        });
       });
 
       // Fetching data for dropdowns
@@ -103,6 +115,11 @@
         console.error('Ошибка при загрузке данных для выпадающих списков:', error.message);
       }
     });
+
+    function selectFuelType(value) {
+      // Set the selected value in the hidden input field
+      document.querySelector('input[name="fuelType"]').value = value;
+    }
   </script>
 </head>
 <body>
@@ -144,12 +161,5 @@
 
     <input class="submit-btn" type="submit" value="Отправить">
   </form>
-
-  <script>
-    function selectFuelType(value) {
-      // Set the selected value in the hidden input field
-      document.querySelector('input[name="fuelType"]').value = value;
-    }
-  </script>
 </body>
 </html>
