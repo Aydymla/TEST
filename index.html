@@ -7,7 +7,8 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
-      background-color: #f0f0f0;
+      background-color: black; /* Черный фон */
+      color: white; /* Белый цвет текста */
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -74,13 +75,13 @@
         }
       });
 
-      // Скрытие клавиатуры при написании сообщения
-      // const inputFields = form.querySelectorAll('input, select, textarea');
-      // inputFields.forEach(field => {
-      //   field.addEventListener('keyup', () => {
-      //     Telegram.WebApp.close(); // Скрыть клавиатуру Telegram
-      //   });
-      // });
+      // Скрытие клавиатуры при фокусе на невводимых полях (select и file input)
+      const nonTextInputFields = form.querySelectorAll('select, input[type="file"]');
+      nonTextInputFields.forEach(field => {
+        field.addEventListener('focus', () => {
+          Telegram.WebApp.close(); // Скрыть клавиатуру Telegram
+        });
+      });
 
       // Fetching data for dropdowns
       try {
