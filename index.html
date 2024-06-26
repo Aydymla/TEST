@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Отчеты инкассаторов</title>
+  <title>Form to Google Sheets</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     body {
-      background-color: #f0f0f0; /* Стандартный фон */
-      color: #333; /* Цвет текста */
+      background-color: #f0f0f0;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -18,59 +17,33 @@
       font-family: Arial, sans-serif;
     }
     form {
-      background-color: #fff; /* Белый фон формы */
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1); /* Тень для формы */
       display: flex;
       flex-direction: column;
-      align-items: center;
-      width: 80%;
-      max-width: 600px; /* Максимальная ширина формы */
+      margin-top: 20px; /* Отступ сверху формы */
     }
     label, select, input, textarea {
       margin: 5px;
       padding: 5px;
       font-size: 16px;
-      width: 100%;
-      max-width: 400px; /* Максимальная ширина полей */
-      box-sizing: border-box; /* Учитывать padding в ширине */
     }
     .submit-btn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #007bff; /* Цвет кнопки */
-      color: #fff; /* Цвет текста на кнопке */
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .submit-btn:hover {
-      background-color: #0056b3; /* Цвет кнопки при наведении */
+      margin-bottom: 20px;
     }
     .fuel-type-buttons {
       display: flex;
       gap: 10px;
-      margin-top: 10px;
-    }
-    .fuel-type-buttons button {
-      padding: 10px 20px;
-      font-size: 16px;
     }
     #photo {
-      width: 100%; /* Ширина кнопки Выбрать файл */
-      max-width: 400px;
+      width: 200%; /* Увеличим размер кнопки Выбрать файл */
     }
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', async function() {
-      if (!Telegram.WebApp) {
-        console.error('Telegram.WebApp не найдено. Пожалуйста, запустите эту страницу в приложении Telegram.');
-        // Дополнительные действия, если приложение не запущено в Telegram
-      } else {
+      if (Telegram.WebApp) {
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
+      } else {
+        console.error('Telegram.WebApp не найдено');
       }
       
       const form = document.getElementById('dataForm');
@@ -87,7 +60,6 @@
           const data = await response.json();
           if (data.result === 'success') {
             alert('Данные успешно отправлены!');
-            Telegram.WebApp.sendData(data);
             Telegram.WebApp.close(); // Скрыть клавиатуру и закрыть WebApp
           } else {
             alert('При отправке данных произошла ошибка: ' + data.message);
@@ -95,21 +67,6 @@
         } catch (error) {
           console.error('Ошибка!', error.message);
         }
-      });
-
-      // Заполнение полей информацией о пользователе
-      const initData = Telegram.WebApp.initDataUnsafe;
-      if (initData && initData.user) {
-        document.getElementById('userId').value = initData.user.id || '';
-        document.getElementById('userUsername').value = initData.user.username || '';
-      }
-
-      // Скрытие клавиатуры при фокусе на невводимых полях (select и file input)
-      const nonTextInputFields = form.querySelectorAll('select, input[type="file"]');
-      nonTextInputFields.forEach(field => {
-        field.addEventListener('focus', () => {
-          Telegram.WebApp.close(); // Скрыть клавиатуру Telegram
-        });
       });
 
       // Fetching data for dropdowns
@@ -145,14 +102,10 @@
         console.error('Ошибка при загрузке данных для выпадающих списков:', error.message);
       }
     });
-
-    function selectFuelType(value) {
-      document.querySelector('input[name="fuelType"]').value = value;
-    }
   </script>
 </head>
 <body>
-  <h1>Отчеты инкассаторов</h1>
+  <h1>Form to Google Sheets</h1>
   <form id="dataForm">
     <label for="cashier">Инкассатор:</label>
     <select id="cashier" name="cashier" required></select>
@@ -162,8 +115,8 @@
 
     <label for="coupons">Талоны:</label>
     <select id="coupons" name="coupons" required>
-      <option value="ДА">ДА</option>
-      <option value="НЕТ">НЕТ</option>
+      <option value="yes">ДА</option>
+      <option value="no">НЕТ</option>
     </select>
 
     <label for="amountSpent">Потрачено (сумма):</label>
@@ -174,11 +127,10 @@
 
     <label>Тип топлива:</label>
     <div class="fuel-type-buttons">
-      <button type="button" id="benzine" value="Бензин" onclick="selectFuelType(this.value)">Бензин</button>
-      <button type="button" id="diesel" value="Дизель" onclick="selectFuelType(this.value)">Дизель</button>
-      <button type="button" id="gas" value="Газ" onclick="selectFuelType(this.value)">Газ</button>
+      <button type="button" id="benzine" name="fuelType" value="Бензин" onclick="selectFuelType(this.value)" required>Бензин</button>
+      <button type="button" id="diesel" name="fuelType" value="Дизель" onclick="selectFuelType(this.value)" required>Дизель</button>
+      <button type="button" id="gas" name="fuelType" value="Газ" onclick="selectFuelType(this.value)" required>Газ</button>
     </div>
-    <input type="hidden" name="fuelType" required>
 
     <label for="mileage">Пробег авто:</label>
     <input type="number" id="mileage" name="mileage" required>
@@ -189,10 +141,14 @@
     <label for="photo">Загрузить фотографию:</label>
     <input type="file" id="photo" name="photo" accept="image/*">
 
-    <input type="hidden" id="userId" name="userId">
-    <input type="hidden" id="userUsername" name="userUsername">
-
     <input class="submit-btn" type="submit" value="Отправить">
   </form>
+
+  <script>
+    function selectFuelType(value) {
+      // Set the selected value in the hidden input field
+      document.querySelector('input[name="fuelType"]').value = value;
+    }
+  </script>
 </body>
 </html>
