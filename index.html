@@ -87,7 +87,8 @@
           const data = await response.json();
           if (data.result === 'success') {
             alert('Данные успешно отправлены!');
-            // Telegram.WebApp.close(); // Скрыть клавиатуру и закрыть WebApp
+            Telegram.WebApp.sendData(data)
+            Telegram.WebApp.close(); // Скрыть клавиатуру и закрыть WebApp
           } else {
             alert('При отправке данных произошла ошибка: ' + data.message);
           }
@@ -96,6 +97,15 @@
         }
       });
 
+      if (Telegram.WebApp.initData && Telegram.WebApp.initData.user) {
+        document.getElementById('userId').value = Telegram.WebApp.initData.user.id || '';
+        document.getElementById('userUsername').value = Telegram.WebApp.initData.user.username || '';
+      }
+      if (Telegram.WebApp.Data && Telegram.WebApp.Data.user) {
+        document.getElementById('userId').value = Telegram.WebApp.Data.user.id || '';
+        document.getElementById('userUsername').value = Telegram.WebApp.Data.user.username || '';
+      }
+      
       // Скрытие клавиатуры при фокусе на невводимых полях (select и file input)
       const nonTextInputFields = form.querySelectorAll('select, input[type="file"]');
       nonTextInputFields.forEach(field => {
