@@ -19,14 +19,22 @@
     form {
       display: flex;
       flex-direction: column;
+      margin-top: 20px; /* Отступ сверху формы */
     }
-    label, input, select, textarea {
+    label, select, input, textarea {
       margin: 5px;
       padding: 5px;
       font-size: 16px;
     }
     .submit-btn {
       margin-bottom: 20px;
+    }
+    .fuel-type-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    #photo {
+      width: 200%; /* Увеличим размер кнопки Выбрать файл */
     }
   </style>
   <script>
@@ -51,13 +59,13 @@
           });
           const data = await response.json();
           if (data.result === 'success') {
-            alert('Data successfully submitted!');
+            alert('Данные успешно отправлены!');
             Telegram.WebApp.close(); // Скрыть клавиатуру и закрыть WebApp
           } else {
-            alert('There was an error submitting the data: ' + data.message);
+            alert('При отправке данных произошла ошибка: ' + data.message);
           }
         } catch (error) {
-          console.error('Error!', error.message);
+          console.error('Ошибка!', error.message);
         }
       });
 
@@ -91,7 +99,7 @@
           citySelect.appendChild(option);
         });
       } catch (error) {
-        console.error('Error fetching dropdown data:', error.message);
+        console.error('Ошибка при загрузке данных для выпадающих списков:', error.message);
       }
     });
   </script>
@@ -118,12 +126,11 @@
     <input type="number" id="fuelPurchased" name="fuelPurchased" required>
 
     <label>Тип топлива:</label>
-    <input type="radio" id="benzine" name="fuelType" value="Бензин" required>
-    <label for="benzine">Бензин</label>
-    <input type="radio" id="diesel" name="fuelType" value="Дизель" required>
-    <label for="diesel">Дизель</label>
-    <input type="radio" id="gas" name="fuelType" value="Газ" required>
-    <label for="gas">Газ</label>
+    <div class="fuel-type-buttons">
+      <button type="button" id="benzine" name="fuelType" value="Бензин" onclick="selectFuelType(this.value)" required>Бензин</button>
+      <button type="button" id="diesel" name="fuelType" value="Дизель" onclick="selectFuelType(this.value)" required>Дизель</button>
+      <button type="button" id="gas" name="fuelType" value="Газ" onclick="selectFuelType(this.value)" required>Газ</button>
+    </div>
 
     <label for="mileage">Пробег авто:</label>
     <input type="number" id="mileage" name="mileage" required>
@@ -134,7 +141,14 @@
     <label for="photo">Загрузить фотографию:</label>
     <input type="file" id="photo" name="photo" accept="image/*">
 
-    <input class="submit-btn" type="submit" value="Submit">
+    <input class="submit-btn" type="submit" value="Отправить">
   </form>
+
+  <script>
+    function selectFuelType(value) {
+      // Set the selected value in the hidden input field
+      document.querySelector('input[name="fuelType"]').value = value;
+    }
+  </script>
 </body>
 </html>
