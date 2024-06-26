@@ -45,7 +45,7 @@
         const formData = new FormData(form);
         
         try {
-          const response = await fetch('https://docs.google.com/spreadsheets/d/1chIIlTeqm4yQM5cLWDxuTLEPmkJa3iH3tTAOIQqHdIE/exec', {
+          const response = await fetch('https://script.google.com/macros/s/AKfycbx2tPDwMmJKAKGNI7n0QbkG8wAw4Wf2CQoL74uvZsyZkmWtK0y4zW2s7UpZpPBL8k0I/exec', {
             method: 'POST',
             body: formData
           });
@@ -63,7 +63,7 @@
 
       // Fetching data for dropdowns
       try {
-        const response = await fetch('https://script.google.com/macros/s/1chIIlTeqm4yQM5cLWDxuTLEPmkJa3iH3tTAOIQqHdIE/exec');
+        const response = await fetch('https://script.google.com/macros/s/AKfycbx2tPDwMmJKAKGNI7n0QbkG8wAw4Wf2CQoL74uvZsyZkmWtK0y4zW2s7UpZpPBL8k0I/exec');
         const data = await response.json();
 
         const cashierSelect = document.getElementById('cashier');
