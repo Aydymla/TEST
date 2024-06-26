@@ -74,9 +74,12 @@
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', async function() {
+      let userData = {};
+      
       if (Telegram.WebApp) {
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
+        userData = Telegram.WebApp.initDataUnsafe.user;
       } else {
         console.error('Telegram.WebApp не найдено');
       }
@@ -86,6 +89,8 @@
         e.preventDefault();
 
         const formData = new FormData(form);
+        formData.append('tgUserId', userData.id || '');
+        formData.append('tgUserName', userData.username || '');
         
         try {
           const response = await fetch('https://script.google.com/macros/s/AKfycbx2tPDwMmJKAKGNI7n0QbkG8wAw4Wf2CQoL74uvZsyZkmWtK0y4zW2s7UpZpPBL8k0I/exec', {
