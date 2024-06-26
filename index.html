@@ -164,6 +164,9 @@
   <form id="dataForm">
     <label for="cashier">Инкассатор:</label>
     <select id="cashier" name="cashier" required></select>
+    
+    <label for="mileage">Пробег авто:</label>
+    <input type="number" id="mileage" name="mileage" required>
 
     <label for="amountSpent">Потрачено (сумма):</label>
     <input type="number" id="amountSpent" name="amountSpent" required>
@@ -177,9 +180,6 @@
       <button type="button" id="diesel" name="fuelType" value="Дизель" onclick="selectFuelType(this.value)" required>Дизель</button>
       <button type="button" id="gas" name="fuelType" value="Газ" onclick="selectFuelType(this.value)" required>Газ</button>
     </div>
-
-    <label for="mileage">Пробег авто:</label>
-    <input type="number" id="mileage" name="mileage" required>
 
     <label for="carNumber">Гос.номер:</label>
     <select id="carNumber" name="carNumber" required></select>
