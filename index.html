@@ -25,6 +25,9 @@
       padding: 5px;
       font-size: 16px;
     }
+    .submit-btn {
+      margin-bottom: 20px;
+    }
   </style>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -34,41 +37,39 @@
       } else {
         console.error('Telegram.WebApp не найдено');
       }
+
+      // Скрытие клавиатуры после отправки формы
+      const form = document.getElementById('dataForm');
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        fetch('https://script.google.com/macros/s/1chIIlTeqm4yQM5cLWDxuTLEPmkJa3iH3tTAOIQqHdIE/exec', {
+          method: 'POST',
+          body: new FormData(form)
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.result === 'success') {
+            alert('Data successfully submitted!');
+            Telegram.WebApp.close(); // Скрыть клавиатуру и закрыть WebApp
+          } else {
+            alert('There was an error submitting the data: ' + data.message);
+          }
+        })
+        .catch(error => console.error('Error!', error.message));
+      });
     });
   </script>
 </head>
 <body>
   <h1>Form to Google Sheets</h1>
   <form id="dataForm">
+    <input class="submit-btn" type="submit" value="Submit">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required><br>
     <label for="email">Email:</label>
     <input type="email" id="email" name="email" required><br>
     <label for="message">Message:</label>
     <textarea id="message" name="message" required></textarea><br>
-    <input type="submit" value="Submit">
   </form>
-  <script>
-    const form = document.getElementById('dataForm');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      fetch('https://script.google.com/macros/s/1chIIlTeqm4yQM5cLWDxuTLEPmkJa3iH3tTAOIQqHdIE/exec', {
-        method: 'POST',
-        body: new FormData(form)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.result === 'success') {
-          alert('Data successfully submitted!');
-          if (Telegram.WebApp) {
-            Telegram.WebApp.close(); // Закрытие WebApp, что также скрывает клавиатуру
-          }
-        } else {
-          alert('There was an error submitting the data: ' + data.message);
-        }
-      })
-      .catch(error => console.error('Error!', error.message));
-    });
-  </script>
 </body>
 </html>
