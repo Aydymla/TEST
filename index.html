@@ -83,7 +83,7 @@
       } else {
         console.error('Telegram.WebApp не найдено');
       }
-      
+
       const form = document.getElementById('dataForm');
       form.addEventListener('submit', async e => {
         e.preventDefault();
@@ -91,7 +91,7 @@
         const formData = new FormData(form);
         formData.append('tgUserId', userData.id || '');
         formData.append('tgUserName', userData.username || '');
-        
+
         try {
           const response = await fetch('https://script.google.com/macros/s/AKfycbx2tPDwMmJKAKGNI7n0QbkG8wAw4Wf2CQoL74uvZsyZkmWtK0y4zW2s7UpZpPBL8k0I/exec', {
             method: 'POST',
@@ -181,9 +181,9 @@
 
     <label>Тип топлива:</label>
     <div class="fuel-type-buttons">
-      <button type="button" id="benzine" name="fuelType" value="Бензин" onclick="selectFuelType(this.value)" required>Бензин</button>
-      <button type="button" id="diesel" name="fuelType" value="Дизель" onclick="selectFuelType(this.value)" required>Дизель</button>
-      <button type="button" id="gas" name="fuelType" value="Газ" onclick="selectFuelType(this.value)" required>Газ</button>
+      <button type="button" id="benzine" name="fuelType" value="Бензин" onclick="selectFuelType(this.value)">Бензин</button>
+      <button type="button" id="diesel" name="fuelType" value="Дизель" onclick="selectFuelType(this.value)">Дизель</button>
+      <button type="button" id="gas" name="fuelType" value="Газ" onclick="selectFuelType(this.value)">Газ</button>
     </div>
 
     <label for="carNumber">Гос.номер:</label>
