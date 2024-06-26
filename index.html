@@ -60,6 +60,9 @@
       .then(data => {
         if (data.result === 'success') {
           alert('Data successfully submitted!');
+          if (Telegram.WebApp) {
+            Telegram.WebApp.close(); // Закрытие WebApp, что также скрывает клавиатуру
+          }
         } else {
           alert('There was an error submitting the data: ' + data.message);
         }
