@@ -1,0 +1,17 @@
+{
+  "name": "Отчеты",
+  "short_name": "Отчеты",
+  "description": "Веб-приложение для отправки отчетов",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#4CAF50",
+  "background_color": "#f0f0f0"
+}
