@@ -67,19 +67,19 @@
         max-width: 400px; /* Максимальная ширина полей */
         box-sizing: border-box; /* Учитывать padding в ширине */
         }
-        .submit-btn {
+        /* .submit-btn {
         margin-top: 20px;
         padding: 10px 20px;
         font-size: 16px;
-        background-color: #007bff; /* Цвет кнопки */
-        color: #fff; /* Цвет текста на кнопке */
+        background-color: #007bff; 
+        color: #fff; 
         border: none;
         border-radius: 5px;
         cursor: pointer;
         }
         .submit-btn:hover {
-        background-color: #0056b3; /* Цвет кнопки при наведении */
-        }
+        background-color: #0056b3;
+        } */
         .fuel-type-buttons {
         display: flex;
         gap: 10px;
@@ -188,14 +188,16 @@
             document.documentElement.className = Telegram.WebApp.colorScheme;
         });
 
-        // Show main button
-        Telegram.WebApp.MainButton.setParams({
-            text: 'Main Button'
-        });
-        Telegram.WebApp.MainButton.onClick(function () {
-            Telegram.WebApp.showAlert('Main Button was clicked')
-        });	
-        Telegram.WebApp.MainButton.show();
+
+
+        // // Show main button
+        // Telegram.WebApp.MainButton.setParams({
+        //     text: 'Отправить'
+        // });
+        // Telegram.WebApp.MainButton.onClick(function () {
+        //     Telegram.WebApp.showAlert('Данные отправленны')
+        // });	
+        // Telegram.WebApp.MainButton.show();
 
         // // Function to call showPopup API
         // function showPopup() {
