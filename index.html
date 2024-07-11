@@ -156,7 +156,7 @@
         Telegram.WebApp.onEvent('themeChanged', function() {
             document.body.setAttribute('style', '--bg-color:' + Telegram.WebApp.backgroundColor);
         });
-
+        
         document.addEventListener('DOMContentLoaded', async function() {
             let userData = {};
             if (Telegram.WebApp) {
@@ -166,28 +166,33 @@
             } else {
                 console.error('Telegram.WebApp не найдено');
             }
-
+        
             const form = document.getElementById('dataForm');
             form.addEventListener('submit', async e => {
                 e.preventDefault();
-
+        
                 const formData = new FormData(form);
                 formData.append('tgUserId', userData.id || '');
                 formData.append('tgUserName', userData.username || '');
-
+        
                 // Преобразуем FormData в параметры запроса
                 const searchParams = new URLSearchParams();
                 for (const [key, value] of formData) {
                     searchParams.append(key, value);
                 }
-
+        
+                const photoInput = document.getElementById('photo');
+                const file = photoInput.files[0];
+                const base64 = await toBase64(file);
+                formData.append('photo', base64);
+        
                 try {
                     const response = await fetch('https://script.google.com/macros/s/AKfycbxAsrwkc_z6h1bq2Zu5vpYq2zcSL2Ao3Po1A3M2KuC9ZkyRyCBFMfDrMo9YHS430OWz/exec', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                         },
-                        body: searchParams.toString()
+                        body: searchParams.toString(), formData
                     });
                     const data = await response.json();
                     if (data.result === 'success') {
@@ -200,29 +205,29 @@
                     console.error('Ошибка!', error.message);
                 }
             });
-
+        
             try {
                 const response = await fetch('https://script.google.com/macros/s/AKfycbxAsrwkc_z6h1bq2Zu5vpYq2zcSL2Ao3Po1A3M2KuC9ZkyRyCBFMfDrMo9YHS430OWz/exec');
                 const data = await response.json();
-
+        
                 const cashierSelect = document.getElementById('cashier');
                 const carNumberSelect = document.getElementById('carNumber');
                 const citySelect = document.getElementById('city');
-
+        
                 data.cashiers.forEach(cashier => {
                     const option = document.createElement('option');
                     option.value = cashier;
                     option.text = cashier;
                     cashierSelect.appendChild(option);
                 });
-
+        
                 data.carNumbers.forEach(carNumber => {
                     const option = document.createElement('option');
                     option.value = carNumber;
                     option.text = carNumber;
                     carNumberSelect.appendChild(option);
                 });
-
+        
                 data.cities.forEach(city => {
                     const option = document.createElement('option');
                     option.value = city;
@@ -233,7 +238,7 @@
                 console.error('Ошибка при загрузке данных для выпадающих списков:', error.message);
             }
         });
-
+        
         function selectFuelType(value) {
             document.querySelectorAll('.fuel-type-buttons button').forEach(button => {
                 button.classList.remove('active');
@@ -249,6 +254,15 @@
             } else {
                 hiddenInput.value = value;
             }
+        }
+        
+        function toBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result.split(',')[1]);
+                reader.onerror = error => reject(error);
+            });
         }
     </script>
 </body>
