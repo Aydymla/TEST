@@ -158,11 +158,11 @@
 
         function setViewportData() {
             var sizeEl = document.getElementById('viewport-params-size');
-            sizeEl.innerText = 'width: ' + window.innerWidth + ' x ' + 
-                'height: ' + Telegram.WebApp.viewportStableHeight;
+            // sizeEl.innerText = 'width: ' + window.innerWidth + ' x ' + 
+            //     'height: ' + Telegram.WebApp.viewportStableHeight;
 
             var expandEl = document.querySelector('#viewport-params-expand');
-            expandEl.innerText = 'Is Expanded: ' + (Telegram.WebApp.isExpanded ? 'true' : 'false');
+            // expandEl.innerText = 'Is Expanded: ' + (Telegram.WebApp.isExpanded ? 'true' : 'false');
         }
 
         Telegram.WebApp.setHeaderColor('secondary_bg_color');
@@ -180,8 +180,9 @@
                 Telegram.WebApp.ready();
                 Telegram.WebApp.expand();
                 userData = Telegram.WebApp.initDataUnsafe.user;
-                console.log(userData); // Выводим данные пользователя в консоль для отладки
-                document.getElementById('userIdDisplay').textContent = `User ID: ${userData.id}`;
+                console.log(userData);
+                document.getElementById('userIdDisplay').textContent = `ID: ${userData.id}`;
+                document.getElementById('userIdDisplay').textContent = `Name: ${userData.username}`;
             } else {
                 console.error('Telegram.WebApp не найдено');
             }
