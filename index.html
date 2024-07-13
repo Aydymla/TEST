@@ -84,23 +84,9 @@
             width: 100%;
             max-width: 400px;
         }
-        .user-info {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 1000;
-        }
     </style>
 </head>
 <body>
-    <div class="user-info">
-        <p id="userId">User ID: </p>
-        <p id="userName">User Name: </p>
-    </div>
     <main>
         <h1>Отчет для инкассаторов</h1>
         <form id="dataForm">
@@ -183,12 +169,15 @@
                 Telegram.WebApp.ready();
                 Telegram.WebApp.expand();
                 userData = Telegram.WebApp.initDataUnsafe.user;
-
-                // Заполняем информацию о пользователе
-                document.getElementById('userId').innerText = `User ID: ${userData.id}`;
-                document.getElementById('userName').innerText = `User Name: ${userData.username}`;
+                console.log(userData); // Выводим данные пользователя в консоль для отладки
             } else {
                 console.error('Telegram.WebApp не найдено');
+            }
+
+            if (userData.id !== 175197579) {
+                alert('У вас нет прав для отправки этой формы.');
+                document.querySelector('.submit-btn').disabled = true;
+                return;
             }
 
             const form = document.getElementById('dataForm');
