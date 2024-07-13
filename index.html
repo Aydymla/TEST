@@ -169,11 +169,12 @@
                 Telegram.WebApp.ready();
                 Telegram.WebApp.expand();
                 userData = Telegram.WebApp.initDataUnsafe.user;
+                console.log(userData); // Выводим данные пользователя в консоль для отладки
             } else {
                 console.error('Telegram.WebApp не найдено');
             }
 
-            if (userData.id !== "175197579") {
+            if (userData.id !== 175197579) {
                 alert('У вас нет прав для отправки этой формы.');
                 document.querySelector('.submit-btn').disabled = true;
                 return;
