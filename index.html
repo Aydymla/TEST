@@ -181,7 +181,7 @@
                 Telegram.WebApp.expand();
                 userData = Telegram.WebApp.initDataUnsafe.user;
                 console.log(userData);
-                document.getElementById('userIdDisplay').textContent = `ID: ${userData.id} \n${userData.username}`;
+                document.getElementById('userIdDisplay').textContent = `${userData.username}`; //ID: ${userData.id}
             } else {
                 console.error('Telegram.WebApp не найдено');
             }
