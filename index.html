@@ -84,9 +84,19 @@
             width: 100%;
             max-width: 400px;
         }
+        #userIdDisplay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
+    <div id="userIdDisplay">User ID: </div>
     <main>
         <h1>Отчет для инкассаторов</h1>
         <form id="dataForm">
@@ -170,15 +180,20 @@
                 Telegram.WebApp.expand();
                 userData = Telegram.WebApp.initDataUnsafe.user;
                 console.log(userData); // Выводим данные пользователя в консоль для отладки
+                document.getElementById('userIdDisplay').textContent = `User ID: ${userData.id}`;
             } else {
                 console.error('Telegram.WebApp не найдено');
             }
 
-            // if (userData.id !== 175197579) {
-            //     alert('У вас нет прав для отправки этой формы.');
-            //     document.querySelector('.submit-btn').disabled = true;
-            //     return;
-            // }
+            const response = await fetch('https://script.google.com/macros/s/AKfycbxAsrwkc_z6h1bq2Zu5vpYq2zcSL2Ao3Po1A3M2KuC9ZkyRyCBFMfDrMo9YHS430OWz/exec');
+            const data = await response.json();
+            const allowedUserIds = data.allowedUserIds || [];
+            
+            if (!allowedUserIds.includes(userData.id.toString())) {
+                alert('У вас нет прав для отправки этой формы.');
+                document.querySelector('.submit-btn').disabled = true;
+                return;
+            }
 
             const form = document.getElementById('dataForm');
             form.addEventListener('submit', async e => {
@@ -217,9 +232,6 @@
             });
 
             try {
-                const response = await fetch('https://script.google.com/macros/s/AKfycbxAsrwkc_z6h1bq2Zu5vpYq2zcSL2Ao3Po1A3M2KuC9ZkyRyCBFMfDrMo9YHS430OWz/exec');
-                const data = await response.json();
-
                 const cashierSelect = document.getElementById('cashier');
                 const carNumberSelect = document.getElementById('carNumber');
                 const citySelect = document.getElementById('city');
