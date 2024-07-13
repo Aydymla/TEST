@@ -145,8 +145,8 @@
         </form>
     </main>
     <div id="viewport"></div>
-    <div id="viewport-params-size"></div>
-    <div id="viewport-params-expand"></div>
+<!--     <div id="viewport-params-size"></div>
+    <div id="viewport-params-expand"></div> -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <script>
         // Init TWA
@@ -156,14 +156,15 @@
             document.documentElement.className = Telegram.WebApp.colorScheme;
         });
 
-        function setViewportData() {
-            var sizeEl = document.getElementById('viewport-params-size');
-            sizeEl.innerText = 'width: ' + window.innerWidth + ' x ' + 
-                'height: ' + Telegram.WebApp.viewportStableHeight;
+        // //Синие справа значения
+        // function setViewportData() {
+        //     var sizeEl = document.getElementById('viewport-params-size');
+        //     sizeEl.innerText = 'width: ' + window.innerWidth + ' x ' + 
+        //         'height: ' + Telegram.WebApp.viewportStableHeight;
 
-            var expandEl = document.querySelector('#viewport-params-expand');
-            expandEl.innerText = 'Is Expanded: ' + (Telegram.WebApp.isExpanded ? 'true' : 'false');
-        }
+        //     var expandEl = document.querySelector('#viewport-params-expand');
+        //     expandEl.innerText = 'Is Expanded: ' + (Telegram.WebApp.isExpanded ? 'true' : 'false');
+        // }
 
         Telegram.WebApp.setHeaderColor('secondary_bg_color');
 
@@ -190,11 +191,12 @@
             const data = await response.json();
             const allowedUserIds = data.allowedUserIds || [];
             
-            if (!allowedUserIds.includes(userData.id.toString())) {
-                alert('У вас нет прав для отправки этой формы.');
-                document.querySelector('.submit-btn').disabled = true;
-                return;
-            }
+            // //Убрать коментарий что бы ограничить доступ
+            // if (!allowedUserIds.includes(userData.id.toString())) {
+            //     alert('У вас нет прав для отправки этой формы.');
+            //     document.querySelector('.submit-btn').disabled = true;
+            //     return;
+            // }
 
             const form = document.getElementById('dataForm');
             form.addEventListener('submit', async e => {
