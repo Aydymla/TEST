@@ -401,14 +401,14 @@
             formData.append('invoiceMimeType', file.type);
         }
 
-        fetch('https://script.google.com/macros/s/AKfycbxAsrwkc_z6h1bq2Zu5vpYq2zcSL2Ao3Po1A3M2KuC9ZkyRyCBFMfDrMo9YHS430OWz/exec', {
+        fetch('https://script.google.com/macros/s/AKfycbyb2QXqt8IfLjL93akaeAYHqZ3rbyEoYAXAb9IEoRwkdTkhqT-swsZhVXGD4XgQSgVI/exec', {
             method: 'POST',
             body: formData
         })
         .then(res => res.json())
         .then(data => {
             if (data.result === 'success') {
-                alert('Data successfully sent');
+                alert('Спасибо за оформленную заявку');
                 if (window.Telegram && Telegram.WebApp) {
                     Telegram.WebApp.close();
                 }
@@ -434,4 +434,5 @@
 
 </body>
 </html>
+
 
