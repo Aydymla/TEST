@@ -292,13 +292,15 @@
 </body>
 </html>
  -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Invoice Form</title>
+
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
     <style>
         body {
             font: 14px/20px Arial, sans-serif;
@@ -368,13 +370,28 @@
 </form>
 
 <script>
+    let tgUser = null;
+
+    // ===== Telegram WebApp init =====
+    if (window.Telegram && Telegram.WebApp) {
+        Telegram.WebApp.ready();
+        Telegram.WebApp.expand();
+        tgUser = Telegram.WebApp.initDataUnsafe.user;
+        console.log('Telegram user:', tgUser);
+    }
+
     document.getElementById('invoiceForm').addEventListener('submit', async function (e) {
         e.preventDefault();
 
         const form = e.target;
         const formData = new FormData(form);
 
-        // Example: convert invoice file to Base64 if needed
+        if (tgUser) {
+            formData.append('tgUserId', tgUser.id);
+            formData.append('tgUserName', tgUser.username || '');
+        }
+
+        // ===== Invoice → Base64 =====
         const fileInput = document.getElementById('invoice');
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
@@ -384,14 +401,20 @@
             formData.append('invoiceMimeType', file.type);
         }
 
-        // TODO: replace URL with your backend / Google Script
         fetch('https://script.google.com/macros/s/AKfycbxAsrwkc_z6h1bq2Zu5vpYq2zcSL2Ao3Po1A3M2KuC9ZkyRyCBFMfDrMo9YHS430OWz/exec', {
             method: 'POST',
             body: formData
         })
         .then(res => res.json())
         .then(data => {
-            alert('Data successfully sent');
+            if (data.result === 'success') {
+                alert('Data successfully sent');
+                if (window.Telegram && Telegram.WebApp) {
+                    Telegram.WebApp.close();
+                }
+            } else {
+                alert(data.message || 'Error');
+            }
         })
         .catch(err => {
             console.error(err);
@@ -411,4 +434,3 @@
 
 </body>
 </html>
-
