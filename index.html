@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -289,5 +289,125 @@
             });
         }
     </script>
+</body>
+</html>
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Invoice Form</title>
+    <style>
+        body {
+            font: 14px/20px Arial, sans-serif;
+            margin: 24px;
+            background: #f7f7f7;
+        }
+        h1 { margin-bottom: 16px; }
+        label { display: block; margin-top: 12px; font-weight: bold; }
+        input, textarea {
+            width: 100%;
+            max-width: 500px;
+            padding: 8px;
+            margin-top: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        textarea { resize: vertical; }
+        .required::after { content: " *"; color: red; }
+        .submit-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Invoice details</h1>
+
+<form id="invoiceForm">
+
+    <label class="required" for="name">NAME</label>
+    <input type="text" id="name" name="name" required>
+
+    <label class="required" for="register">Register №</label>
+    <input type="text" id="register" name="register" required>
+
+    <label for="vat">VAT</label>
+    <input type="text" id="vat" name="vat">
+
+    <label class="required" for="country">Country</label>
+    <input type="text" id="country" name="country" required>
+
+    <label class="required" for="address">Address</label>
+    <textarea id="address" name="address" rows="3" required></textarea>
+
+    <label class="required" for="mail">Mail</label>
+    <input type="email" id="mail" name="mail" required>
+
+    <label for="iban">IBAN</label>
+    <input type="text" id="iban" name="iban">
+
+    <label for="swift">SWIFT / BIC</label>
+    <input type="text" id="swift" name="swift">
+
+    <label for="bank">Bank</label>
+    <input type="text" id="bank" name="bank">
+
+    <label for="bankAddress">Bank address</label>
+    <textarea id="bankAddress" name="bankAddress" rows="2"></textarea>
+
+    <label for="invoice">Invoice (photo / PDF / document)</label>
+    <input type="file" id="invoice" name="invoice" accept="image/*,application/pdf,.doc,.docx">
+
+    <button class="submit-btn" type="submit">Submit</button>
+</form>
+
+<script>
+    document.getElementById('invoiceForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const formData = new FormData(form);
+
+        // Example: convert invoice file to Base64 if needed
+        const fileInput = document.getElementById('invoice');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            const base64 = await toBase64(file);
+            formData.set('invoice', base64);
+            formData.append('invoiceFileName', file.name);
+            formData.append('invoiceMimeType', file.type);
+        }
+
+        // TODO: replace URL with your backend / Google Script
+        fetch('YOUR_ENDPOINT_URL', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert('Data successfully sent');
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Error sending data');
+        });
+    });
+
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);
+            reader.onerror = error => reject(error);
+        });
+    }
+</script>
+
 </body>
 </html>
